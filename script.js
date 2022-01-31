@@ -1,25 +1,35 @@
 document.addEventListener('DOMContentLoaded', () => {
-	getChampions();
-	//freefetch();
+	getChampions('all');
+
+	const sortsection = document.getElementById('availability');
+	sortsection.addEventListener('change', () => {
+		document.getElementById('champions').innerHTML = '';
+		if (sortsection.value === 'available') {
+			freefetch();
+		}
+		else {
+			getChampions('all');
+		}
+	})
 });
 
 function freefetch() {
-	fetch('https://na1.api.riotgames.com/lol/platform/v3/champion-rotations?api_key=RGAPI-d9e58d6c-e59b-4d75-97dd-dfc12a01226f')
+	fetch('https://na1.api.riotgames.com/lol/platform/v3/champion-rotations?api_key=RGAPI-56082112-ca6d-44d4-a967-f48b65ab1ad3')
 	.then((r) => r.json())
 	.then((object) => {
-		getChampions(1, object.freeChampionIds);
+		getChampions('available', object.freeChampionIds);
 	})
 }
 
-function getChampions(onPage = 0, list = []) {
+function getChampions(onPage, list = []) {
 	fetch('http://ddragon.leagueoflegends.com/cdn/12.2.1/data/en_US/champion.json')
 	.then((r) => r.json())
 	.then((object) => {
 		for (champion in object.data) {
-			if (onPage === 0) {
+			if (onPage === 'all') {
 				addChampion(object.data[champion]);
 			}
-			else if (onPage === 1) {
+			else if (onPage === 'available') {
 				if (list.indexOf(parseInt(object.data[champion].key)) !== -1) {
 					addChampion(object.data[champion]);
 				}
@@ -33,7 +43,6 @@ function addChampion(champion) {
 	const Cfigure = document.createElement('figure');
 	const Cimg = document.createElement('img');
 	const caption = document.createElement('figcaption');
-	console.log(champion)
 
 	Ccard.setAttribute('id', champion.key);
 	//Cimg.setAttribute('src', `./images/${champion.id}.jpeg`);
