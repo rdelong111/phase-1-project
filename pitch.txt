@@ -1,0 +1,32 @@
+Phase 1 Project Pitch:
+
+Basic Story:
+League of Legends is an extremely popular game. Although, it is very complex and has a ton of info that can be overwhelming to a new or casual player.  There is available info on the different champions in the LoL client, but I prefer to be shown exact numbers or exact type of champion (tank, mage, etc) instead of reading through the lore or looking at graphs.
+
+Core Features:
+-Multiple pictures of a champion will be shown on page with all necessary info (name, title, type, partype, stats, and lore)
+-The user will be able to view the champions that they are able to play at the current time (current free to play champions and owned champions)
+-The user can switch between all, owned, not-owned, free-to-play, and able-to-play champions shown on the page
+-The user will be able to pick a favorite champion and switch their current favorite. Favorite will featured
+-When the user clicks on a champ, all of the champ details will be shown/presented via pop-up
+
+API Data:
+-Current free-to-play champions accessed from Riot Games Developer page
+https://na1.api.riotgames.com/lol/platform/v3/champion-rotations?api_key=RGAPI-d9e58d6c-e59b-4d75-97dd-dfc12a01226f
+
+-All champions and their info accessed from Riot Games Developer (Data Dragon) page
+http://ddragon.leagueoflegends.com/cdn/12.2.1/data/en_US/champion.json
+
+Possible Challenges:
+-Developing code that can be better optimized
+-I tend to repeat myself sometimes in my code (unnecessary function)
+-Creating sorting methods with multiple combos (not just one option) (currently mapping out all the ways I can sort)
+-Shouldn't be a problem I think, but maybe lose access to data from Riot Games Developer api
+-Correctly sizing the champion cards how I specifically want (I did a lot of back and forth testing on the prework personal page)
+
+How am I meeting project requirements:
+1. I am accessing data from the Riot Games Developer API using JSON as the communication format.
+2. I will be using only one page as per the instructions. The closest I'll maybe get to creating more pages is making a pop-up somehow when I try to add features later.
+3. There will many different event listeners being used. DOMContentLoaded always will be used. There will be multiple ways to sort the page, submit for searching for a user, adding a champion to my favorite or owned.
+4. The user will be able to pick a favorite champion to be displayed. The user will be able to add a comment to the champion for self-reference later.
+5. I like to create functions with names that have meaning and tell me what it is going to do.  When I want to complete a task, I look through my code to see if any of my functions will be able to do that task.
