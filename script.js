@@ -14,10 +14,10 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 function freefetch() {
-	fetch('https://na1.api.riotgames.com/lol/platform/v3/champion-rotations?api_key=RGAPI-56082112-ca6d-44d4-a967-f48b65ab1ad3')
+	fetch('http://localhost:3000/freeChampionIds')
 	.then((r) => r.json())
 	.then((object) => {
-		getChampions('available', object.freeChampionIds);
+		getChampions('available', object[0].key);
 	})
 }
 
