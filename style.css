@@ -1,3 +1,27 @@
 body {
-	background: #808080;
+	background-image: url("http://ddragon.leagueoflegends.com/cdn/img/champion/splash/Aatrox_0.jpg");
+	background-repeat: no-repeat;
+	background-attachment: fixed;
+	background-size: cover;
+}
+
+#champions {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.card {
+  background: rgba(128, 128, 128, .80);
+  text-align: center;
+  display: inline-grid;
+  height: 700px;
+  padding: 5px;
+  margin: 20px;
+  flex: 1 1 21%;
+}
+
+.champpic {
+  justify-self: center;
+  height: 400px;
+  width: auto;
 }
