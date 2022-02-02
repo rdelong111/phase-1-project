@@ -1,4 +1,9 @@
 document.addEventListener('DOMContentLoaded', () => {
+	fetch('http://localhost:3000/favoriteChampion')
+	.then(r => r.json())
+	.then(fav => {
+		document.body.style.backgroundImage = `url(http://ddragon.leagueoflegends.com/cdn/img/champion/splash/${fav[0].pictureID}_0.jpg)`
+	})
   getChampions('all');
 
   const sortsection = document.getElementById('availability');
@@ -70,6 +75,7 @@ function addChampion(champion, isOwned) {
   const Ctitle = document.createElement('h1');
   const Cblurb = document.createElement('p');
   const ownBtn = document.createElement('button');
+  const favBtn = document.createElement('button');
 
   Ccard.setAttribute('id', champion.key);
   Ccard.setAttribute('class', 'card');
@@ -80,7 +86,6 @@ function addChampion(champion, isOwned) {
   Namecaption.textContent = champion.name;
   Ctitle.textContent = champion.title;
   Cblurb.textContent = champion.blurb;
-  ownBtn.setAttribute('id', champion.name);
   if (isOwned) {
   	ownBtn.textContent = 'OWNED';
   	ownBtn.disabled = true;
@@ -88,6 +93,7 @@ function addChampion(champion, isOwned) {
   else {
   	ownBtn.textContent = 'OWN';
   }
+  favBtn.textContent = 'Set Favorite';
 
   Cfigure.appendChild(Cimg);
   Cfigure.appendChild(Namecaption);
@@ -96,13 +102,22 @@ function addChampion(champion, isOwned) {
   biocontainer.appendChild(Cblurb);
   Ccard.appendChild(biocontainer);
   Ccard.appendChild(ownBtn);
+  Ccard.appendChild(favBtn);
   champsection.appendChild(Ccard);
 
   ownBtn.addEventListener('click', () => {
     ownBtn.disabled = true;
     ownBtn.textContent = 'OWNED';
     postToOwned(champion);
+    if (document.getElementById('availability').value === 'NOTowned') {
+    	Ccard.remove();
+    }
   });
+
+  favBtn.addEventListener('click', () => {
+  	document.body.style.backgroundImage = `url(http://ddragon.leagueoflegends.com/cdn/img/champion/splash/${champion.id}_0.jpg)`;
+  	patchtheFavChamp(champion);
+  })
 }
 
 function postToOwned(champ) {
@@ -114,6 +129,18 @@ function postToOwned(champ) {
     body: JSON.stringify({
       id: champ.key,
       name: champ.name
+    })
+  })
+}
+
+function patchtheFavChamp(champ) {
+	fetch('http://localhost:3000/favoriteChampion/1', {
+    method: 'PATCH',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      pictureID: champ.id
     })
   })
 }
