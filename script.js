@@ -35,20 +35,25 @@ function checkIfOwned(champs, onPage, list) {
 	.then(theOwned => {
 		let ownedList = [];
 		for (odChamp of theOwned) {
-			ownedList.push(odChamp.name);
+			ownedList.push(odChamp.id);
 		}
 		for (champ in champs) {
 			if (onPage === 'all') {
-				addChampion(champs[champ], ownedList.includes(champ));
+				addChampion(champs[champ], ownedList.includes(champs[champ].key));
 			}
 			else if (onPage === 'free') {
 				if (list.indexOf(parseInt(champs[champ].key)) !== -1) {
-					addChampion(champs[champ], ownedList.includes(champ));
+					addChampion(champs[champ], ownedList.includes(champs[champ].key));
 				}
 			}
 			else if (onPage === 'owned') {
-				if (ownedList.includes(champ)) {
+				if (ownedList.includes(champs[champ].key)) {
 					addChampion(champs[champ], true);
+				}
+			}
+			else if (onPage === 'NOTowned') {
+				if (!(ownedList.includes(champs[champ].key))) {
+					addChampion(champs[champ], false);
 				}
 			}
 		}
