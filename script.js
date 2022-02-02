@@ -8,7 +8,7 @@ document.addEventListener('DOMContentLoaded', () => {
       freefetch();
     }
     else {
-      getChampions('all');
+      getChampions(sortsection.value);
     }
   })
 });
@@ -44,6 +44,11 @@ function checkIfOwned(champs, onPage, list) {
 			else if (onPage === 'free') {
 				if (list.indexOf(parseInt(champs[champ].key)) !== -1) {
 					addChampion(champs[champ], ownedList.includes(champ));
+				}
+			}
+			else if (onPage === 'owned') {
+				if (ownedList.includes(champ)) {
+					addChampion(champs[champ], true);
 				}
 			}
 		}
