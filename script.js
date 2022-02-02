@@ -17,7 +17,7 @@ function freefetch() {
 	fetch('http://localhost:3000/freeChampionIds')
 	.then(r => r.json())
 	.then(object => {
-		getChampions('free', object[0].key);
+		getChampions('free', object.key);
 	})
 }
 
@@ -47,6 +47,7 @@ function addChampion(champion) {
 	const biocontainer = document.createElement('article');
 	const Ctitle = document.createElement('h1');
 	const Cblurb = document.createElement('p');
+	const ownBtn = document.createElement('button');
 
 	Ccard.setAttribute('id', champion.key);
 	Ccard.setAttribute('class', 'card');
@@ -57,29 +58,49 @@ function addChampion(champion) {
 	Namecaption.textContent = champion.name;
 	Ctitle.textContent = champion.title;
 	Cblurb.textContent = champion.blurb;
+	ownBtn.setAttribute('id', champion.name);
 
 	Cfigure.appendChild(Cimg);
 	Cfigure.appendChild(Namecaption);
 	Ccard.appendChild(Cfigure);
-	createOwnBtn(champion, Ccard);
 	biocontainer.appendChild(Ctitle);
 	biocontainer.appendChild(Cblurb);
 	Ccard.appendChild(biocontainer);
+	editOwnBtn(champion, ownBtn, Ccard);
 	champsection.appendChild(Ccard);
+
+	ownBtn.addEventListener('click', () => {
+		ownBtn.disabled = true;
+		ownBtn.textContent = 'OWNED';
+		postToOwned(champion);
+	});
 }
 
-function createOwnBtn(champ, card) {
+function editOwnBtn(champ, btn, card) {
 	fetch('http://localhost:3000/owned')
 	.then(r => r.json())
-	.then(OdChamp => {
-		if (!(champ.name in OdChamp)) {
-			const ownBtn = document.createElement('button');
-			ownBtn.setAttribute('id', champ.name);
-			ownBtn.textContent = 'OWN';
-			card.appendChild(ownBtn);
-			ownBtn.addEventListener('click', () => {
-				console.log(champ.name);
-			});
+	.then(list => {
+		for (current of list) {
+			if (current.id === champ.key) {
+				btn.textContent = 'OWNED';
+				btn.disabled = true;
+				return card.appendChild(btn);
+			}
 		}
+		btn.textContent = 'OWN';
+		card.appendChild(btn);
+	})
+}
+
+function postToOwned(champ) {
+	fetch('http://localhost:3000/owned', {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json'
+		},
+		body: JSON.stringify({
+			id: champ.key,
+			name: champ.name
+		})
 	})
 }

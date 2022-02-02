@@ -1,10 +1,276 @@
 {
-	"freeChampionIds": [
-        {
-        	"key": [10, 13, 28, 40, 67, 74, 86, 89, 101, 111, 120, 221, 427, 498, 518, 887],
-        	"id": 1
-        }
-    ],
+  "freeChampionIds": {
+    "key": [
+      10,
+      13,
+      28,
+      40,
+      67,
+      74,
+      86,
+      89,
+      101,
+      111,
+      120,
+      221,
+      427,
+      498,
+      518,
+      887
+    ]
+  },
   "owned": [
+    {
+      "id": "53",
+      "name": "Blitzcrank"
+    },
+    {
+      "id": "154",
+      "name": "Zac"
+    },
+    {
+      "id": "421",
+      "name": "Rek'Sai"
+    },
+    {
+      "id": "32",
+      "name": "Amumu"
+    },
+    {
+      "id": "63",
+      "name": "Brand"
+    },
+    {
+      "id": "1",
+      "name": "Annie"
+    },
+    {
+      "id": "143",
+      "name": "Zyra"
+    },
+    {
+      "id": "104",
+      "name": "Graves"
+    },
+    {
+      "id": "17",
+      "name": "Teemo"
+    },
+    {
+      "id": "54",
+      "name": "Malphite"
+    },
+    {
+      "id": "76",
+      "name": "Nidalee"
+    },
+    {
+      "id": "16",
+      "name": "Soraka"
+    },
+    {
+      "id": "31",
+      "name": "Cho'Gath"
+    },
+    {
+      "id": "4",
+      "name": "Twisted Fate"
+    },
+    {
+      "id": "157",
+      "name": "Yasuo"
+    },
+    {
+      "id": "13",
+      "name": "Ryze"
+    },
+    {
+      "id": "62",
+      "name": "Wukong"
+    },
+    {
+      "id": "45",
+      "name": "Veigar"
+    },
+    {
+      "id": "85",
+      "name": "Kennen"
+    },
+    {
+      "id": "18",
+      "name": "Tristana"
+    },
+    {
+      "id": "103",
+      "name": "Ahri"
+    },
+    {
+      "id": "15",
+      "name": "Sivir"
+    },
+    {
+      "id": "24",
+      "name": "Jax"
+    },
+    {
+      "id": "22",
+      "name": "Ashe"
+    },
+    {
+      "id": "21",
+      "name": "Miss Fortune"
+    },
+    {
+      "id": "114",
+      "name": "Fiora"
+    },
+    {
+      "id": "57",
+      "name": "Maokai"
+    },
+    {
+      "id": "82",
+      "name": "Mordekaiser"
+    },
+    {
+      "id": "11",
+      "name": "Master Yi"
+    },
+    {
+      "id": "81",
+      "name": "Ezreal"
+    },
+    {
+      "id": "86",
+      "name": "Garen"
+    },
+    {
+      "id": "61",
+      "name": "Orianna"
+    },
+    {
+      "id": "222",
+      "name": "Jinx"
+    },
+    {
+      "id": "29",
+      "name": "Twitch"
+    },
+    {
+      "id": "36",
+      "name": "Dr. Mundo"
+    },
+    {
+      "id": "25",
+      "name": "Morgana"
+    },
+    {
+      "id": "92",
+      "name": "Riven"
+    },
+    {
+      "id": "78",
+      "name": "Poppy"
+    },
+    {
+      "id": "20",
+      "name": "Nunu & Willump"
+    },
+    {
+      "id": "14",
+      "name": "Sion"
+    },
+    {
+      "id": "42",
+      "name": "Corki"
+    },
+    {
+      "id": "98",
+      "name": "Shen"
+    },
+    {
+      "id": "99",
+      "name": "Lux"
+    },
+    {
+      "id": "27",
+      "name": "Singed"
+    },
+    {
+      "id": "238",
+      "name": "Zed"
+    },
+    {
+      "id": "51",
+      "name": "Caitlyn"
+    },
+    {
+      "id": "105",
+      "name": "Fizz"
+    },
+    {
+      "id": "40",
+      "name": "Janna"
+    },
+    {
+      "id": "2",
+      "name": "Olaf"
+    },
+    {
+      "id": "84",
+      "name": "Akali"
+    },
+    {
+      "id": "28",
+      "name": "Evelynn"
+    },
+    {
+      "id": "9",
+      "name": "Fiddlesticks"
+    },
+    {
+      "id": "74",
+      "name": "Heimerdinger"
+    },
+    {
+      "id": "126",
+      "name": "Jayce"
+    },
+    {
+      "id": "10",
+      "name": "Kayle"
+    },
+    {
+      "id": "75",
+      "name": "Nasus"
+    },
+    {
+      "id": "246",
+      "name": "Qiyana"
+    },
+    {
+      "id": "33",
+      "name": "Rammus"
+    },
+    {
+      "id": "77",
+      "name": "Udyr"
+    },
+    {
+      "id": "254",
+      "name": "Vi"
+    },
+    {
+      "id": "19",
+      "name": "Warwick"
+    },
+    {
+      "id": "5",
+      "name": "Xin Zhao"
+    },
+    {
+      "id": "777",
+      "name": "Yone"
+    }
   ]
 }
