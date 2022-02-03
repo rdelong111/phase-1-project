@@ -83,6 +83,9 @@ function addChampion(champion, isOwned) {
   const favBtn = document.createElement('button');
   const linktoLoL = document.createElement('a');
   const linkText = document.createElement('span');
+  const theModal = document.createElement('section');
+  const modalContent = document.createElement('div');
+  const Mcontent = document.createElement('p');
 
   Ccard.setAttribute('id', champion.key);
   Ccard.setAttribute('class', 'card');
@@ -103,7 +106,9 @@ function addChampion(champion, isOwned) {
   favBtn.textContent = 'Set Favorite';
   linktoLoL.setAttribute('href', `https://www.leagueoflegends.com/en-us/champions/${linkReadyText(champion.name)}/`);
   linkText.textContent = 'View More';
-
+  theModal.setAttribute('class', 'modal');
+  modalContent.setAttribute('class', 'modal-content');
+  Mcontent.textContent = champion.name;
 
   Cfigure.appendChild(Cimg);
   Cfigure.appendChild(Namecaption);
@@ -116,6 +121,9 @@ function addChampion(champion, isOwned) {
   Ccard.appendChild(ownBtn);
   Ccard.appendChild(favBtn);
   champsection.appendChild(Ccard);
+  modalContent.appendChild(Mcontent);
+  theModal.appendChild(modalContent);
+  Ccard.appendChild(theModal);
 
   ownBtn.addEventListener('click', () => {
     ownBtn.disabled = true;
@@ -129,6 +137,16 @@ function addChampion(champion, isOwned) {
   favBtn.addEventListener('click', () => {
   	document.body.style.backgroundImage = `url(http://ddragon.leagueoflegends.com/cdn/img/champion/splash/${champion.id}_0.jpg)`;
   	patchtheFavChamp(champion);
+  });
+
+  Cimg.addEventListener('click', () => {
+  	theModal.style.display = 'block';
+  });
+
+  window.addEventListener('click', (e) => {
+  	if (e.target === theModal) {
+  		theModal.style.display = 'none';
+  	}
   })
 }
 
