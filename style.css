@@ -4,7 +4,14 @@ body {
 	background-size: cover;
 }
 
+#sortingchamps {
+  padding-top: 50px;
+  padding-bottom: 5px;
+}
+
 #champions {
+  border: 5px solid black;
+  margin: 20px;
   display: flex;
   flex-wrap: wrap;
   justify-content: center;

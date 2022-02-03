@@ -9,8 +9,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const sortsection = document.getElementById('availability');
   sortsection.addEventListener('change', () => {
     document.getElementById('champions').innerHTML = '';
-    if (sortsection.value === 'free') {
-      freefetch();
+    if (sortsection.value === 'free' || sortsection.value === 'available') {
+      freefetch(sortsection.value);
     }
     else {
       getChampions(sortsection.value);
@@ -18,11 +18,11 @@ document.addEventListener('DOMContentLoaded', () => {
   })
 });
 
-function freefetch() {
+function freefetch(onPage) {
   fetch('http://localhost:3000/freeChampionIds')
   .then(r => r.json())
   .then(object => {
-    getChampions('free', object.key);
+    getChampions(onPage, object.key);
   })
 }
 
@@ -59,6 +59,11 @@ function checkIfOwned(champs, onPage, list) {
 			else if (onPage === 'NOTowned') {
 				if (!(ownedList.includes(champs[champ].key))) {
 					addChampion(champs[champ], false);
+				}
+			}
+			else {
+				if (list.indexOf(parseInt(champs[champ].key)) !== -1 || ownedList.includes(champs[champ].key)) {
+					addChampion(champs[champ], ownedList.includes(champs[champ].key));
 				}
 			}
 		}
