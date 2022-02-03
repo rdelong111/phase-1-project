@@ -81,6 +81,8 @@ function addChampion(champion, isOwned) {
   const Cblurb = document.createElement('p');
   const ownBtn = document.createElement('button');
   const favBtn = document.createElement('button');
+  const linktoLoL = document.createElement('a');
+  const linkText = document.createElement('span');
 
   Ccard.setAttribute('id', champion.key);
   Ccard.setAttribute('class', 'card');
@@ -99,11 +101,16 @@ function addChampion(champion, isOwned) {
   	ownBtn.textContent = 'OWN';
   }
   favBtn.textContent = 'Set Favorite';
+  linktoLoL.setAttribute('href', `https://www.leagueoflegends.com/en-us/champions/${linkReadyText(champion.name)}/`);
+  linkText.textContent = 'View More';
+
 
   Cfigure.appendChild(Cimg);
   Cfigure.appendChild(Namecaption);
   Ccard.appendChild(Cfigure);
   biocontainer.appendChild(Ctitle);
+  linktoLoL.appendChild(linkText);
+  Cblurb.appendChild(linktoLoL);
   biocontainer.appendChild(Cblurb);
   Ccard.appendChild(biocontainer);
   Ccard.appendChild(ownBtn);
@@ -148,4 +155,14 @@ function patchtheFavChamp(champ) {
       pictureID: champ.id
     })
   })
+}
+
+function linkReadyText(word) {
+	if (word === 'Nunu & Willump') {
+		return 'nunu';
+	}
+	let copy = word.replace(/'/g, ' ');
+	copy = copy.toLowerCase();
+	copy = copy.replace(/ /g, '-')
+	return copy;
 }
