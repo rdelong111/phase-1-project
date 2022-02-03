@@ -2,20 +2,31 @@ document.addEventListener('DOMContentLoaded', () => {
 	fetch('http://localhost:3000/favoriteChampion')
 	.then(r => r.json())
 	.then(fav => {
-		document.body.style.backgroundImage = `url(http://ddragon.leagueoflegends.com/cdn/img/champion/splash/${fav[0].pictureID}_0.jpg)`
+		document.getElementById('champions').style.backgroundImage = `url(http://ddragon.leagueoflegends.com/cdn/img/champion/splash/${fav[0].pictureID}_0.jpg)`
 	})
   getChampions('all');
 
-  const sortsection = document.getElementById('availability');
-  sortsection.addEventListener('change', () => {
+  const sortAvail = document.getElementById('availability');
+  sortAvail.addEventListener('change', () => {
     document.getElementById('champions').innerHTML = '';
-    if (sortsection.value === 'free' || sortsection.value === 'available') {
-      freefetch(sortsection.value);
+    if (sortAvail.value === 'free' || sortAvail.value === 'available') {
+      freefetch(sortAvail.value);
     }
     else {
-      getChampions(sortsection.value);
+      getChampions(sortAvail.value);
     }
-  })
+  });
+
+  const sortType = document.getElementById('champtype');
+  sortType.addEventListener('change', () => {
+  	document.getElementById('champions').innerHTML = '';
+  	if (sortAvail.value === 'free' || sortAvail.value === 'available') {
+      freefetch(sortAvail.value);
+    }
+    else {
+      getChampions(sortAvail.value);
+    }
+  });
 });
 
 function freefetch(onPage) {
@@ -44,30 +55,37 @@ function checkIfOwned(champs, onPage, list) {
 		}
 		for (champ in champs) {
 			if (onPage === 'all') {
-				addChampion(champs[champ], ownedList.includes(champs[champ].key));
+				checkChampType(champs[champ], ownedList.includes(champs[champ].key));
 			}
 			else if (onPage === 'free') {
 				if (list.indexOf(parseInt(champs[champ].key)) !== -1) {
-					addChampion(champs[champ], ownedList.includes(champs[champ].key));
+					checkChampType(champs[champ], ownedList.includes(champs[champ].key));
 				}
 			}
 			else if (onPage === 'owned') {
 				if (ownedList.includes(champs[champ].key)) {
-					addChampion(champs[champ], true);
+					checkChampType(champs[champ], true);
 				}
 			}
 			else if (onPage === 'NOTowned') {
 				if (!(ownedList.includes(champs[champ].key))) {
-					addChampion(champs[champ], false);
+					checkChampType(champs[champ], false);
 				}
 			}
 			else {
 				if (list.indexOf(parseInt(champs[champ].key)) !== -1 || ownedList.includes(champs[champ].key)) {
-					addChampion(champs[champ], ownedList.includes(champs[champ].key));
+					checkChampType(champs[champ], ownedList.includes(champs[champ].key));
 				}
 			}
 		}
 	})
+}
+
+function checkChampType(champion, isOwned) {
+	const selectedType = document.getElementById('champtype').value;
+	if (champion.tags.includes(selectedType) || selectedType === 'all') {
+		addChampion(champion, isOwned);
+	}
 }
 
 function addChampion(champion, isOwned) {
@@ -79,6 +97,7 @@ function addChampion(champion, isOwned) {
   const biocontainer = document.createElement('article');
   const Ctitle = document.createElement('h1');
   const Cblurb = document.createElement('p');
+  const Cbtns = document.createElement('section');
   const ownBtn = document.createElement('button');
   const favBtn = document.createElement('button');
   const linktoLoL = document.createElement('a');
@@ -96,6 +115,7 @@ function addChampion(champion, isOwned) {
   Namecaption.textContent = champion.name;
   Ctitle.textContent = champion.title;
   Cblurb.textContent = champion.blurb;
+  Cbtns.setAttribute('class', 'champbtns');
   if (isOwned) {
   	ownBtn.textContent = 'OWNED';
   	ownBtn.disabled = true;
@@ -106,6 +126,7 @@ function addChampion(champion, isOwned) {
   favBtn.textContent = 'Set Favorite';
   linktoLoL.setAttribute('href', `https://www.leagueoflegends.com/en-us/champions/${linkReadyText(champion.name)}/`);
   linkText.textContent = 'View More';
+  linkText.setAttribute('class', 'linktext');
   theModal.setAttribute('class', 'modal');
   modalContent.setAttribute('class', 'modal-content');
   Mcontent.textContent = champion.name;
@@ -118,8 +139,9 @@ function addChampion(champion, isOwned) {
   Cblurb.appendChild(linktoLoL);
   biocontainer.appendChild(Cblurb);
   Ccard.appendChild(biocontainer);
-  Ccard.appendChild(ownBtn);
-  Ccard.appendChild(favBtn);
+  Cbtns.appendChild(ownBtn);
+  Cbtns.appendChild(favBtn);
+  Ccard.appendChild(Cbtns);
   champsection.appendChild(Ccard);
   modalContent.appendChild(Mcontent);
   theModal.appendChild(modalContent);
@@ -135,7 +157,7 @@ function addChampion(champion, isOwned) {
   });
 
   favBtn.addEventListener('click', () => {
-  	document.body.style.backgroundImage = `url(http://ddragon.leagueoflegends.com/cdn/img/champion/splash/${champion.id}_0.jpg)`;
+  	champsection.style.backgroundImage = `url(http://ddragon.leagueoflegends.com/cdn/img/champion/splash/${champion.id}_0.jpg)`;
   	patchtheFavChamp(champion);
   });
 
