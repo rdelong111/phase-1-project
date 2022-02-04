@@ -9,7 +9,7 @@ document.addEventListener('DOMContentLoaded', () => {
 	.then(r => r.json())
 	.then(fav => {
 		champList.style.backgroundImage = `url(http://ddragon.leagueoflegends.com/cdn/img/champion/splash/${fav[0].pictureID}_0.jpg)`
-	})
+	});
   getChampions('all');
 
   sortAvail.addEventListener('change', () => {
@@ -56,6 +56,8 @@ function getChampions(onPage, list = []) {
   fetch('http://ddragon.leagueoflegends.com/cdn/12.2.1/data/en_US/champion.json')
   .then(r => r.json())
   .then(object => {
+  	console.log(object.data)
+  	document.getElementById('totalamt').textContent = Object.keys(object.data).length;
   	checkIfOwned(object.data, onPage, list);
   })
 }
@@ -122,7 +124,7 @@ function addChampion(champion, isOwned) {
   const linkText = document.createElement('span');
   const theModal = document.createElement('section');
   const modalContent = document.createElement('div');
-  const Mcontent = document.createElement('p');
+  createPopUp(modalContent, champion);
 
   Ccard.setAttribute('id', champion.key);
   Ccard.setAttribute('class', 'card');
@@ -146,8 +148,8 @@ function addChampion(champion, isOwned) {
   linkText.textContent = 'View More';
   linkText.setAttribute('class', 'linktext');
   theModal.setAttribute('class', 'modal');
+  modalContent.style.backgroundImage = `url(http://ddragon.leagueoflegends.com/cdn/img/champion/splash/${champion.id}_0.jpg)`
   modalContent.setAttribute('class', 'modal-content');
-  Mcontent.textContent = champion.name;
 
   Cfigure.appendChild(Cimg);
   Cfigure.appendChild(Namecaption);
@@ -161,7 +163,6 @@ function addChampion(champion, isOwned) {
   Cbtns.appendChild(favBtn);
   Ccard.appendChild(Cbtns);
   champsection.appendChild(Ccard);
-  modalContent.appendChild(Mcontent);
   theModal.appendChild(modalContent);
   Ccard.appendChild(theModal);
 
@@ -225,4 +226,51 @@ function linkReadyText(word) {
 	copy = copy.toLowerCase();
 	copy = copy.replace(/ /g, '-')
 	return copy;
+}
+
+function createPopUp(content, champ) {
+	const Ctable = document.createElement('table');
+	const tableCap = document.createElement('caption');
+	const tHead = document.createElement('thead');
+	const tBody = document.createElement('tbody');
+	const statHeadR = document.createElement('tr');
+	const statHeadName = document.createElement('th');
+	const statHeadVal = document.createElement('th');
+
+	tableCap.textContent = `${champ.partype} --- `;
+	for (let i = 0; i < champ.tags.length; i++) {
+		if (i === 0) {
+			tableCap.textContent = `${tableCap.textContent}${champ.tags[i]}`;
+		}
+		else {
+			tableCap.textContent = `${tableCap.textContent}, ${champ.tags[i]}`;
+		}
+	}
+	statHeadName.textContent = 'Stat Name';
+	statHeadVal.textContent = 'Stat Value';
+
+	statHeadR.appendChild(statHeadName);
+	statHeadR.appendChild(statHeadVal);
+	tHead.appendChild(statHeadR);
+	Ctable.appendChild(tableCap);
+	Ctable.appendChild(tHead);
+	Ctable.appendChild(tBody);
+	content.appendChild(Ctable);
+
+	for (stat in champ.stats) {
+		createTableRow(champ.stats[stat], stat, tBody);
+	}
+}
+
+function createTableRow(stat, statName, body) {
+	const row = document.createElement('tr');
+	const data1 = document.createElement('td');
+	const data2 = document.createElement('td');
+
+	data1.textContent = statName;
+	data2.textContent = stat;
+
+	row.appendChild(data1);
+	row.appendChild(data2);
+	body.appendChild(row);
 }

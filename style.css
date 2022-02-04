@@ -3,6 +3,7 @@ body {
 	background-repeat: no-repeat;
 	background-attachment: fixed;
 	background-size: cover;
+  margin: 0;
 }
 
 #sortingchamps {
@@ -36,6 +37,7 @@ body {
 
 #champAmt > span {
   font-size: 30px;
+  color: #ffffff;
 }
 
 #champions {
@@ -90,7 +92,6 @@ body {
 .modal {
   display: none;
   position: fixed;
-  z-index: 1;
   padding-top: 100px;
   left: 0;
   top: 0;
@@ -102,9 +103,37 @@ body {
 }
 
 .modal-content {
-  background-color: #fefefe;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-size: cover;
   margin: auto;
   padding: 20px;
-  border: 1px solid #888;
+  border: 5px solid #888;
   width: 80%;
+  display: flex;
+}
+
+.modal-content > * {
+  flex: 1 1 51%;
+}
+
+table, table caption {
+  background: rgba(128, 128, 128, .80);
+}
+
+table, th, td {
+  border: 1px solid #000000;
+}
+
+footer {
+  background-color: #000000;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+}
+footer p {
+  color: #808080;
+  text-align: center;
+  padding-left: 25px;
+  padding-right: 25px;
 }
