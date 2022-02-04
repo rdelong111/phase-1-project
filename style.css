@@ -8,6 +8,34 @@ body {
 #sortingchamps {
   padding-top: 50px;
   padding-bottom: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: left;
+  margin-left: 50px;
+  flex-wrap: wrap;
+}
+
+#sortingchamps > * {
+  height: 30px;
+  margin-bottom: 10px;
+}
+
+#viewchamps {
+  flex-shrink: 0;
+}
+
+#sortingchamps select, #viewchamps {
+  margin-right: 10px;
+}
+
+#champAmt {
+  display: flex;
+  align-items: center;
+  justify-content: left;
+}
+
+#champAmt > span {
+  font-size: 30px;
 }
 
 #champions {
@@ -15,7 +43,8 @@ body {
   background-attachment: fixed;
   background-size: cover;
   border: 5px solid black;
-  margin: 20px;
+  margin: 50px;
+  margin-top: 10px;
   display: flex;
   flex-wrap: wrap;
   justify-content: center;

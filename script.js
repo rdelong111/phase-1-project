@@ -1,14 +1,19 @@
 document.addEventListener('DOMContentLoaded', () => {
+	const sortingSec = document.getElementById('sortingchamps');
+	const sortAvail = document.getElementById('availability');
+	const sortType = document.getElementById('champtype');
+	const viewChampBtn = document.getElementById('viewchamps');
+	const champList = document.getElementById('champions');
+
 	fetch('http://localhost:3000/favoriteChampion')
 	.then(r => r.json())
 	.then(fav => {
-		document.getElementById('champions').style.backgroundImage = `url(http://ddragon.leagueoflegends.com/cdn/img/champion/splash/${fav[0].pictureID}_0.jpg)`
+		champList.style.backgroundImage = `url(http://ddragon.leagueoflegends.com/cdn/img/champion/splash/${fav[0].pictureID}_0.jpg)`
 	})
   getChampions('all');
 
-  const sortAvail = document.getElementById('availability');
   sortAvail.addEventListener('change', () => {
-    document.getElementById('champions').innerHTML = '';
+    champList.innerHTML = '';
     if (sortAvail.value === 'free' || sortAvail.value === 'available') {
       freefetch(sortAvail.value);
     }
@@ -17,15 +22,25 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  const sortType = document.getElementById('champtype');
   sortType.addEventListener('change', () => {
-  	document.getElementById('champions').innerHTML = '';
+  	champList.innerHTML = '';
   	if (sortAvail.value === 'free' || sortAvail.value === 'available') {
       freefetch(sortAvail.value);
     }
     else {
       getChampions(sortAvail.value);
     }
+  });
+
+  viewChampBtn.addEventListener('click', () => {
+  	if (viewChampBtn.textContent === 'View Champions') {
+  		champList.style.display = 'flex';
+  		viewChampBtn.textContent = 'Hide Champions';
+  	}
+  	else {
+  		champList.style.display = 'none';
+  		viewChampBtn.textContent = 'View Champions';
+  	}
   });
 });
 
@@ -53,6 +68,7 @@ function checkIfOwned(champs, onPage, list) {
 		for (odChamp of theOwned) {
 			ownedList.push(odChamp.id);
 		}
+		document.getElementById('amt').textContent = '0';
 		for (champ in champs) {
 			if (onPage === 'all') {
 				checkChampType(champs[champ], ownedList.includes(champs[champ].key));
@@ -85,6 +101,8 @@ function checkChampType(champion, isOwned) {
 	const selectedType = document.getElementById('champtype').value;
 	if (champion.tags.includes(selectedType) || selectedType === 'all') {
 		addChampion(champion, isOwned);
+		const currentAmt = parseInt(document.getElementById('amt').textContent) + 1;
+		document.getElementById('amt').textContent = `${currentAmt}`;
 	}
 }
 
@@ -153,6 +171,8 @@ function addChampion(champion, isOwned) {
     postToOwned(champion);
     if (document.getElementById('availability').value === 'NOTowned') {
     	Ccard.remove();
+    	const currentAmt = parseInt(document.getElementById('amt').textContent) - 1;
+			document.getElementById('amt').textContent = `${currentAmt}`;
     }
   });
 
