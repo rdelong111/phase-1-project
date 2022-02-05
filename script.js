@@ -1,4 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
+	// test github is working
 	const sortingSec = document.getElementById('sortingchamps');
 	const sortAvail = document.getElementById('availability');
 	const sortType = document.getElementById('champtype');
