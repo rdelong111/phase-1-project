@@ -11,6 +11,7 @@ document.addEventListener('DOMContentLoaded', () => {
 	.then(fav => {
 		champList.style.backgroundImage = `url(http://ddragon.leagueoflegends.com/cdn/img/champion/splash/${fav[0].pictureID}_0.jpg)`
 	});
+
   getChampions('all');
 
   sortAvail.addEventListener('change', () => {
@@ -57,7 +58,6 @@ function getChampions(onPage, list = []) {
   fetch('http://ddragon.leagueoflegends.com/cdn/12.2.1/data/en_US/champion.json')
   .then(r => r.json())
   .then(object => {
-  	console.log(object.data)
   	document.getElementById('totalamt').textContent = Object.keys(object.data).length;
   	checkIfOwned(object.data, onPage, list);
   })
@@ -125,7 +125,6 @@ function addChampion(champion, isOwned) {
   const linkText = document.createElement('span');
   const theModal = document.createElement('section');
   const modalContent = document.createElement('div');
-  createPopUp(modalContent, champion);
 
   Ccard.setAttribute('id', champion.key);
   Ccard.setAttribute('class', 'card');
@@ -184,11 +183,13 @@ function addChampion(champion, isOwned) {
   });
 
   Cimg.addEventListener('click', () => {
+  	getSpecificChampInfo(modalContent, champion);
   	theModal.style.display = 'block';
   });
 
   window.addEventListener('click', (e) => {
   	if (e.target === theModal) {
+  		modalContent.innerHTML = '';
   		theModal.style.display = 'none';
   	}
   })
@@ -229,7 +230,30 @@ function linkReadyText(word) {
 	return copy;
 }
 
-function createPopUp(content, champ) {
+function getSpecificChampInfo(content, champ) {
+	fetch(`http://ddragon.leagueoflegends.com/cdn/12.3.1/data/en_US/champion/${champ.id}.json`)
+	.then(r => r.json())
+	.then(champData => {
+		console.log(champData.data[champ.id])
+		createPopUp(content, champData.data[champ.id]);
+	})
+}
+
+function createPopUp(content, data) {
+	const contentR1 = document.createElement('div');
+	const contentR2 = document.createElement('div');
+	const contentR3 = document.createElement('div');
+
+	createR1(contentR1, data);
+	createR2(contentR2, data);
+	createR3(contentR3, data);
+
+	content.appendChild(contentR1);
+	content.appendChild(contentR2);
+	content.appendChild(contentR3);
+}
+
+function createR1(content, data) {
 	const Ctable = document.createElement('table');
 	const tableCap = document.createElement('caption');
 	const tHead = document.createElement('thead');
@@ -238,13 +262,13 @@ function createPopUp(content, champ) {
 	const statHeadName = document.createElement('th');
 	const statHeadVal = document.createElement('th');
 
-	tableCap.textContent = `${champ.partype} --- `;
-	for (let i = 0; i < champ.tags.length; i++) {
+	tableCap.textContent = `${data.partype} --- `;
+	for (let i = 0; i < data.tags.length; i++) {
 		if (i === 0) {
-			tableCap.textContent = `${tableCap.textContent}${champ.tags[i]}`;
+			tableCap.textContent = `${tableCap.textContent}${data.tags[i]}`;
 		}
 		else {
-			tableCap.textContent = `${tableCap.textContent}, ${champ.tags[i]}`;
+			tableCap.textContent = `${tableCap.textContent}, ${data.tags[i]}`;
 		}
 	}
 	statHeadName.textContent = 'Stat Name';
@@ -258,12 +282,12 @@ function createPopUp(content, champ) {
 	Ctable.appendChild(tBody);
 	content.appendChild(Ctable);
 
-	for (stat in champ.stats) {
-		createTableRow(champ.stats[stat], stat, tBody);
+	for (stat in data.stats) {
+		createTableRowR1(data.stats[stat], stat, tBody);
 	}
 }
 
-function createTableRow(stat, statName, body) {
+function createTableRowR1(stat, statName, body) {
 	const row = document.createElement('tr');
 	const data1 = document.createElement('td');
 	const data2 = document.createElement('td');
@@ -273,5 +297,107 @@ function createTableRow(stat, statName, body) {
 
 	row.appendChild(data1);
 	row.appendChild(data2);
+	body.appendChild(row);
+}
+
+function createR2(content, data) {
+	const Ctable = document.createElement('table');
+	const tableCap = document.createElement('caption');
+	const tHead = document.createElement('thead');
+	const tBody = document.createElement('tbody');
+	const spellHeadRow = document.createElement('tr');
+	const spellHeadPas = document.createElement('th');
+	const spellHeadQ = document.createElement('th');
+	const spellHeadW = document.createElement('th');
+	const spellHeadE = document.createElement('th');
+	const spellHeadR = document.createElement('th');
+	const spellBodRow = document.createElement('tr');
+	const spellBodPas = document.createElement('td');
+	const imgP = document.createElement('img');
+
+	spellHeadPas.textContent = 'Passive';
+	spellHeadQ.textContent = 'Q';
+	spellHeadW.textContent = 'W';
+	spellHeadE.textContent = 'E';
+	spellHeadR.textContent = 'R';
+	spellBodPas.textContent = data.passive.name;
+	for (spell of data.spells) {
+		createTableColR2(spell, spellBodRow);
+	}
+	imgP.setAttribute('src', `http://ddragon.leagueoflegends.com/cdn/12.3.1/img/passive/${data.passive.image.full}`);
+	tableCap.textContent = `${data.name} spells`;
+
+	spellHeadRow.appendChild(spellHeadPas);
+	spellHeadRow.appendChild(spellHeadQ);
+	spellHeadRow.appendChild(spellHeadW);
+	spellHeadRow.appendChild(spellHeadE);
+	spellHeadRow.appendChild(spellHeadR);
+	tHead.appendChild(spellHeadRow);
+	spellBodPas.appendChild(imgP);
+	spellBodRow.appendChild(spellBodPas);
+	tBody.appendChild(spellBodRow);
+	Ctable.appendChild(tableCap);
+	Ctable.appendChild(tHead);
+	Ctable.appendChild(tBody);
+	content.appendChild(Ctable);
+}
+
+function createTableColR2(spell, body) {
+	const col = document.createElement('td');
+	const img = document.createElement('img');
+	col.textContent = spell.name;
+	img.setAttribute('src', `http://ddragon.leagueoflegends.com/cdn/12.3.1/img/spell/${spell.image.full}`);
+	col.appendChild(img);
+	body.appendChild(col);
+}
+
+function createR3(content, data) {
+	const Ctable = document.createElement('table');
+	const tableCap = document.createElement('caption');
+	const tHead = document.createElement('thead');
+	const tBody = document.createElement('tbody');
+	const tipHeadRow = document.createElement('tr');
+	const allyCol = document.createElement('th');
+	const enemyCol = document.createElement('th');
+	const maxLenTipAmt = Math.max(data.allytips.length, data.enemytips.length);
+
+	for (let i = 0; i < maxLenTipAmt; i++) {
+		createTableRowR3(data, tBody, i);
+	}
+
+	tableCap.textContent = `${data.name} tips`;
+	allyCol.textContent = 'Ally Tips';
+	enemyCol.textContent = 'Enemy Tips';
+
+	tipHeadRow.appendChild(allyCol);
+	tipHeadRow.appendChild(enemyCol);
+	tHead.appendChild(tipHeadRow);
+	Ctable.appendChild(tableCap);
+	Ctable.appendChild(tHead);
+	Ctable.appendChild(tBody);
+	content.appendChild(Ctable);
+}
+
+function createTableRowR3(data, body, counter) {
+	const row = document.createElement('tr');
+	const ally = document.createElement('td');
+	const enemy = document.createElement('td');
+
+	if (counter >= data.allytips.length) {
+		ally.textContent = '';
+	}
+	else {
+		ally.textContent = data.allytips[counter];
+	}
+
+	if (counter >= data.enemytips.length) {
+		enemy.textContent = '';
+	}
+	else {
+		enemy.textContent = data.enemytips[counter];
+	}
+
+	row.appendChild(ally);
+	row.appendChild(enemy);
 	body.appendChild(row);
 }
