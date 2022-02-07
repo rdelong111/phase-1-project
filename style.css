@@ -113,11 +113,13 @@ body {
   width: 80%;
   display: flex;
   justify-content: center;
+  flex-wrap: wrap;
 }
 
 .modal-content > * {
   flex: 1 1 26%;
   display: flex;
+  margin: 5px;
 }
 
 .modal-content div > * {
@@ -128,8 +130,12 @@ table, table caption {
   background: rgba(128, 128, 128, .80);
 }
 
-table, th, td {
+table, th, td, table caption {
   border: 1px solid #000000;
+}
+
+.spellImg {
+  cursor: pointer;
 }
 
 footer {

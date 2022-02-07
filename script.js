@@ -315,17 +315,15 @@ function createR2(content, data) {
 	const spellBodPas = document.createElement('td');
 	const imgP = document.createElement('img');
 
+	tableCap.textContent = `${data.name} spells`;
 	spellHeadPas.textContent = 'Passive';
 	spellHeadQ.textContent = 'Q';
 	spellHeadW.textContent = 'W';
 	spellHeadE.textContent = 'E';
 	spellHeadR.textContent = 'R';
-	spellBodPas.textContent = data.passive.name;
-	for (spell of data.spells) {
-		createTableColR2(spell, spellBodRow);
-	}
+	spellBodPas.innerHTML = `${data.passive.name}<br>`;
 	imgP.setAttribute('src', `http://ddragon.leagueoflegends.com/cdn/12.3.1/img/passive/${data.passive.image.full}`);
-	tableCap.textContent = `${data.name} spells`;
+	imgP.setAttribute('class', 'spellImg');
 
 	spellHeadRow.appendChild(spellHeadPas);
 	spellHeadRow.appendChild(spellHeadQ);
@@ -335,20 +333,32 @@ function createR2(content, data) {
 	tHead.appendChild(spellHeadRow);
 	spellBodPas.appendChild(imgP);
 	spellBodRow.appendChild(spellBodPas);
+	for (spell of data.spells) {
+		createTableColR2(spell, spellBodRow);
+	}
 	tBody.appendChild(spellBodRow);
 	Ctable.appendChild(tableCap);
 	Ctable.appendChild(tHead);
 	Ctable.appendChild(tBody);
 	content.appendChild(Ctable);
+
+	imgP.addEventListener('click', () => {
+		alert(data.passive.description);
+	});
 }
 
 function createTableColR2(spell, body) {
 	const col = document.createElement('td');
 	const img = document.createElement('img');
-	col.textContent = spell.name;
+	col.innerHTML = `${spell.name}<br>`;
 	img.setAttribute('src', `http://ddragon.leagueoflegends.com/cdn/12.3.1/img/spell/${spell.image.full}`);
+	img.setAttribute('class', 'spellImg');
 	col.appendChild(img);
 	body.appendChild(col);
+
+	img.addEventListener('click', () => {
+		alert(spell.description);
+	});
 }
 
 function createR3(content, data) {
