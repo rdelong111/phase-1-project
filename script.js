@@ -1,5 +1,4 @@
 document.addEventListener('DOMContentLoaded', () => {
-	// test github is working
 	const sortingSec = document.getElementById('sortingchamps');
 	const sortAvail = document.getElementById('availability');
 	const sortType = document.getElementById('champtype');
@@ -12,8 +11,10 @@ document.addEventListener('DOMContentLoaded', () => {
 		champList.style.backgroundImage = `url(http://ddragon.leagueoflegends.com/cdn/img/champion/splash/${fav[0].pictureID}_0.jpg)`
 	});
 
+  // Initially put all of the champion cards in the container
   getChampions('all');
 
+  // Changes what cards are in the container when the availability drop-down box (1st drop-down) is changed
   sortAvail.addEventListener('change', () => {
     champList.innerHTML = '';
     if (sortAvail.value === 'free' || sortAvail.value === 'available') {
@@ -24,6 +25,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
+  // Changes what cards are in the container when the type drop-down box (2nd drop-down) is changed
   sortType.addEventListener('change', () => {
   	champList.innerHTML = '';
   	if (sortAvail.value === 'free' || sortAvail.value === 'available') {
@@ -34,6 +36,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
+  // The Hide/View button either hides or shows the champion container
   viewChampBtn.addEventListener('click', () => {
   	if (viewChampBtn.textContent === 'View Champions') {
   		champList.style.display = 'flex';
@@ -46,6 +49,7 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 });
 
+// If the free champions are included in the sorting options, then this function is called
 function freefetch(onPage) {
   fetch('http://localhost:3000/freeChampionIds')
   .then(r => r.json())
@@ -54,6 +58,7 @@ function freefetch(onPage) {
   })
 }
 
+// Every time the sorting boxes are changed, this function is called to get all of the champions and their data
 function getChampions(onPage, list = []) {
   fetch('http://ddragon.leagueoflegends.com/cdn/12.2.1/data/en_US/champion.json')
   .then(r => r.json())
@@ -63,6 +68,7 @@ function getChampions(onPage, list = []) {
   })
 }
 
+// After the getChampions function is called, this function will get the most updated list of owned champions and will push the champions based on the selected availability box option
 function checkIfOwned(champs, onPage, list) {
 	fetch('http://localhost:3000/owned')
 	.then(r => r.json())
@@ -100,6 +106,7 @@ function checkIfOwned(champs, onPage, list) {
 	})
 }
 
+// This function is called after checkIfOwned pushes filtered champions. This function filters those champions based on the TYPE box selection.
 function checkChampType(champion, isOwned) {
 	const selectedType = document.getElementById('champtype').value;
 	if (champion.tags.includes(selectedType) || selectedType === 'all') {
@@ -109,6 +116,7 @@ function checkChampType(champion, isOwned) {
 	}
 }
 
+// This function creates a champion card for the container
 function addChampion(champion, isOwned) {
   const champsection = document.getElementById('champions');
   const Ccard = document.createElement('div');
@@ -135,6 +143,7 @@ function addChampion(champion, isOwned) {
   Ctitle.textContent = champion.title;
   Cblurb.textContent = champion.blurb;
   Cbtns.setAttribute('class', 'champbtns');
+  // This if/else will set the OWN button and disable it if champion is owned
   if (isOwned) {
   	ownBtn.textContent = 'OWNED';
   	ownBtn.disabled = true;
@@ -154,7 +163,6 @@ function addChampion(champion, isOwned) {
   Cfigure.appendChild(Namecaption);
   Ccard.appendChild(Cfigure);
   biocontainer.appendChild(Ctitle);
-  
   Cblurb.appendChild(MorLlore);
   biocontainer.appendChild(Cblurb);
   Ccard.appendChild(biocontainer);
@@ -165,6 +173,7 @@ function addChampion(champion, isOwned) {
   theModal.appendChild(modalContent);
   Ccard.appendChild(theModal);
 
+  // The View More/Less button will show more or less lore when clicked
   MorLlore.addEventListener('click', () => {
   	if (MorLlore.textContent === 'View More') {
   		MorLlore.textContent = 'View Less';
@@ -179,10 +188,12 @@ function addChampion(champion, isOwned) {
   	}
   });
 
+  // If the OWN button is clicked, the button will be disabled and the champion ID and name will be POSTed to data.json
   ownBtn.addEventListener('click', () => {
     ownBtn.disabled = true;
     ownBtn.textContent = 'OWNED';
     postToOwned(champion);
+    // If "Not-Owned Champions" is the current selection. The card will be removed from the page
     if (document.getElementById('availability').value === 'NOTowned') {
     	Ccard.remove();
     	const currentAmt = parseInt(document.getElementById('amt').textContent) - 1;
@@ -190,16 +201,19 @@ function addChampion(champion, isOwned) {
     }
   });
 
+  // When the Set Favorite button is clicked, the background in the champion container is set to the favorited champion.  The favoriteChampion is PATCHed in data.json
   favBtn.addEventListener('click', () => {
   	champsection.style.backgroundImage = `url(http://ddragon.leagueoflegends.com/cdn/img/champion/splash/${champion.id}_0.jpg)`;
   	patchtheFavChamp(champion);
   });
 
+  // When the champion image is clicked, a pop-up with more champion info is shown
   Cimg.addEventListener('click', () => {
   	getSpecificChampInfo(modalContent, champion);
   	theModal.style.display = 'block';
   });
 
+  // Clicking outside the pop-up will close the pop-up
   window.addEventListener('click', (e) => {
   	if (e.target === theModal) {
   		modalContent.innerHTML = '';
@@ -208,6 +222,7 @@ function addChampion(champion, isOwned) {
   })
 }
 
+// Gets more champion lore when the View More button is clicked
 function changeLore(blurb, ID, btn) {
 	fetch(`http://ddragon.leagueoflegends.com/cdn/12.3.1/data/en_US/champion/${ID}.json`)
 	.then(r => r.json())
@@ -217,6 +232,7 @@ function changeLore(blurb, ID, btn) {
 	})
 }
 
+// POST for data.json owned champions
 function postToOwned(champ) {
   fetch('http://localhost:3000/owned', {
     method: 'POST',
@@ -230,6 +246,7 @@ function postToOwned(champ) {
   })
 }
 
+// PATCH for data.json favoriteChampion
 function patchtheFavChamp(champ) {
 	fetch('http://localhost:3000/favoriteChampion/1', {
     method: 'PATCH',
@@ -242,40 +259,32 @@ function patchtheFavChamp(champ) {
   })
 }
 
-function linkReadyText(word) {
-	if (word === 'Nunu & Willump') {
-		return 'nunu';
-	}
-	let copy = word.replace(/'/g, ' ');
-	copy = copy.toLowerCase();
-	copy = copy.replace(/ /g, '-')
-	return copy;
-}
-
+// GETs more specific champion info for ONE specific champion
 function getSpecificChampInfo(content, champ) {
 	fetch(`http://ddragon.leagueoflegends.com/cdn/12.3.1/data/en_US/champion/${champ.id}.json`)
 	.then(r => r.json())
 	.then(champData => {
-		console.log(champData.data[champ.id])
 		createPopUp(content, champData.data[champ.id]);
 	})
 }
 
+// Creates content for the champion pop-up
 function createPopUp(content, data) {
-	const contentR1 = document.createElement('div');
-	const contentR2 = document.createElement('div');
-	const contentR3 = document.createElement('div');
+	const contentC1 = document.createElement('div');
+	const contentC2 = document.createElement('div');
+	const contentC3 = document.createElement('div');
 
-	createR1(contentR1, data);
-	createR2(contentR2, data);
-	createR3(contentR3, data);
+	createC1(contentC1, data);
+	createC2(contentC2, data);
+	createC3(contentC3, data);
 
-	content.appendChild(contentR1);
-	content.appendChild(contentR2);
-	content.appendChild(contentR3);
+	content.appendChild(contentC1);
+	content.appendChild(contentC2);
+	content.appendChild(contentC3);
 }
 
-function createR1(content, data) {
+// Column 1 of the pop-up shows champion statistics
+function createC1(content, data) {
 	const Ctable = document.createElement('table');
 	const tableCap = document.createElement('caption');
 	const tHead = document.createElement('thead');
@@ -305,11 +314,12 @@ function createR1(content, data) {
 	content.appendChild(Ctable);
 
 	for (stat in data.stats) {
-		createTableRowR1(data.stats[stat], stat, tBody);
+		createTableRowC1(data.stats[stat], stat, tBody);
 	}
 }
 
-function createTableRowR1(stat, statName, body) {
+// Creates a stat row for the table body in pop-up column 1
+function createTableRowC1(stat, statName, body) {
 	const row = document.createElement('tr');
 	const data1 = document.createElement('td');
 	const data2 = document.createElement('td');
@@ -322,7 +332,8 @@ function createTableRowR1(stat, statName, body) {
 	body.appendChild(row);
 }
 
-function createR2(content, data) {
+// Column 2 of the pop-up shows the champion passive and spells
+function createC2(content, data) {
 	const Ctable = document.createElement('table');
 	const tableCap = document.createElement('caption');
 	const tHead = document.createElement('thead');
@@ -356,7 +367,7 @@ function createR2(content, data) {
 	spellBodPas.appendChild(imgP);
 	spellBodRow.appendChild(spellBodPas);
 	for (spell of data.spells) {
-		createTableColR2(spell, spellBodRow);
+		createTableColC2(spell, spellBodRow);
 	}
 	tBody.appendChild(spellBodRow);
 	Ctable.appendChild(tableCap);
@@ -369,7 +380,8 @@ function createR2(content, data) {
 	});
 }
 
-function createTableColR2(spell, body) {
+// Creates a spell column for pop-up column 2 table
+function createTableColC2(spell, body) {
 	const col = document.createElement('td');
 	const img = document.createElement('img');
 	col.innerHTML = `${spell.name}<br>`;
@@ -383,7 +395,8 @@ function createTableColR2(spell, body) {
 	});
 }
 
-function createR3(content, data) {
+// Column 3 of the pop-up shows tips for playing with/against the selected champion
+function createC3(content, data) {
 	const Ctable = document.createElement('table');
 	const tableCap = document.createElement('caption');
 	const tHead = document.createElement('thead');
@@ -394,7 +407,7 @@ function createR3(content, data) {
 	const maxLenTipAmt = Math.max(data.allytips.length, data.enemytips.length);
 
 	for (let i = 0; i < maxLenTipAmt; i++) {
-		createTableRowR3(data, tBody, i);
+		createTableRowC3(data, tBody, i);
 	}
 
 	tableCap.textContent = `${data.name} tips`;
@@ -410,7 +423,8 @@ function createR3(content, data) {
 	content.appendChild(Ctable);
 }
 
-function createTableRowR3(data, body, counter) {
+// Creates a row for the tips table. It leaves a spot blank if there are no tips for the current counter
+function createTableRowC3(data, body, counter) {
 	const row = document.createElement('tr');
 	const ally = document.createElement('td');
 	const enemy = document.createElement('td');
