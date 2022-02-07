@@ -121,8 +121,7 @@ function addChampion(champion, isOwned) {
   const Cbtns = document.createElement('section');
   const ownBtn = document.createElement('button');
   const favBtn = document.createElement('button');
-  const linktoLoL = document.createElement('a');
-  const linkText = document.createElement('span');
+  const MorLlore = document.createElement('a');
   const theModal = document.createElement('section');
   const modalContent = document.createElement('div');
 
@@ -144,9 +143,9 @@ function addChampion(champion, isOwned) {
   	ownBtn.textContent = 'OWN';
   }
   favBtn.textContent = 'Set Favorite';
-  linktoLoL.setAttribute('href', `https://www.leagueoflegends.com/en-us/champions/${linkReadyText(champion.name)}/`);
-  linkText.textContent = 'View More';
-  linkText.setAttribute('class', 'linktext');
+  MorLlore.setAttribute('href', '#');
+  MorLlore.setAttribute('class', 'MorLlore');
+  MorLlore.textContent = 'View More';
   theModal.setAttribute('class', 'modal');
   modalContent.style.backgroundImage = `url(http://ddragon.leagueoflegends.com/cdn/img/champion/splash/${champion.id}_0.jpg)`
   modalContent.setAttribute('class', 'modal-content');
@@ -155,8 +154,8 @@ function addChampion(champion, isOwned) {
   Cfigure.appendChild(Namecaption);
   Ccard.appendChild(Cfigure);
   biocontainer.appendChild(Ctitle);
-  linktoLoL.appendChild(linkText);
-  Cblurb.appendChild(linktoLoL);
+  
+  Cblurb.appendChild(MorLlore);
   biocontainer.appendChild(Cblurb);
   Ccard.appendChild(biocontainer);
   Cbtns.appendChild(ownBtn);
@@ -165,6 +164,20 @@ function addChampion(champion, isOwned) {
   champsection.appendChild(Ccard);
   theModal.appendChild(modalContent);
   Ccard.appendChild(theModal);
+
+  MorLlore.addEventListener('click', () => {
+  	if (MorLlore.textContent === 'View More') {
+  		MorLlore.textContent = 'View Less';
+  		changeLore(Cblurb, champion.id, MorLlore);
+  		Cblurb.style.fontSize = '12px';
+  	}
+  	else {
+  		MorLlore.textContent = 'View More';
+  		Cblurb.textContent = champion.blurb;
+  		Cblurb.style.fontSize = '16px';
+  		Cblurb.appendChild(MorLlore);
+  	}
+  });
 
   ownBtn.addEventListener('click', () => {
     ownBtn.disabled = true;
@@ -193,6 +206,15 @@ function addChampion(champion, isOwned) {
   		theModal.style.display = 'none';
   	}
   })
+}
+
+function changeLore(blurb, ID, btn) {
+	fetch(`http://ddragon.leagueoflegends.com/cdn/12.3.1/data/en_US/champion/${ID}.json`)
+	.then(r => r.json())
+	.then(champData => {
+		blurb.textContent = champData.data[ID].lore;
+		blurb.appendChild(btn);
+	})
 }
 
 function postToOwned(champ) {
