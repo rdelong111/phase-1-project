@@ -5,6 +5,7 @@ document.addEventListener('DOMContentLoaded', () => {
 	const viewChampBtn = document.getElementById('viewchamps');
 	const champList = document.getElementById('champions');
 
+	// GETs the last favorited champion and sets the container background
 	fetch('http://localhost:3000/favoriteChampion')
 	.then(r => r.json())
 	.then(fav => {
@@ -77,7 +78,11 @@ function checkIfOwned(champs, onPage, list) {
 		for (odChamp of theOwned) {
 			ownedList.push(odChamp.id);
 		}
+
+		// Initially set the champion counter to 0 when the container is reloaded or page is initially loaded
 		document.getElementById('amt').textContent = '0';
+
+		// Goes through all of the champions and filters them based on availability drop-down selection
 		for (champ in champs) {
 			if (onPage === 'all') {
 				checkChampType(champs[champ], ownedList.includes(champs[champ].key));
@@ -111,6 +116,8 @@ function checkChampType(champion, isOwned) {
 	const selectedType = document.getElementById('champtype').value;
 	if (champion.tags.includes(selectedType) || selectedType === 'all') {
 		addChampion(champion, isOwned);
+
+		// Increment the champion counter each time a champion is added to the container
 		const currentAmt = parseInt(document.getElementById('amt').textContent) + 1;
 		document.getElementById('amt').textContent = `${currentAmt}`;
 	}
@@ -243,7 +250,7 @@ function postToOwned(champ) {
       id: champ.key,
       name: champ.name
     })
-  })
+  });
 }
 
 // PATCH for data.json favoriteChampion
@@ -256,7 +263,7 @@ function patchtheFavChamp(champ) {
     body: JSON.stringify({
       pictureID: champ.id
     })
-  })
+  });
 }
 
 // GETs more specific champion info for ONE specific champion
@@ -265,7 +272,7 @@ function getSpecificChampInfo(content, champ) {
 	.then(r => r.json())
 	.then(champData => {
 		createPopUp(content, champData.data[champ.id]);
-	})
+	});
 }
 
 // Creates content for the champion pop-up
@@ -375,6 +382,7 @@ function createC2(content, data) {
 	Ctable.appendChild(tBody);
 	content.appendChild(Ctable);
 
+	// Alerts the user of what the champion passive does
 	imgP.addEventListener('click', () => {
 		alert(data.passive.description);
 	});
@@ -390,6 +398,7 @@ function createTableColC2(spell, body) {
 	col.appendChild(img);
 	body.appendChild(col);
 
+	// Alerts the user of what the champion spell does
 	img.addEventListener('click', () => {
 		alert(spell.description);
 	});
