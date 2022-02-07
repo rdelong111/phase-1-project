@@ -115,7 +115,7 @@ body {
 }
 
 .modal-content > * {
-  flex: 1 1 51%;
+  flex: 0 1 51%;
 }
 
 table, table caption {
