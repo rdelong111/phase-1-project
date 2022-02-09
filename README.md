@@ -28,13 +28,38 @@ $ json-server --watch data.json
 ```
 
 ### Updating Free-to-Play Champions
-Every week, a new set of champions are selected to be the Free-to-Play champions (even if you don't own them, you can play as them)
+Every week on Tuesday, a new set of champions are selected to be the Free-to-Play champions (even if you don't own them, you can play as them)
 
 In order to access the id's of the current free to play champions, you'll need to go to [Free-Champs][] and login to your developer account (free to make). After you login, scroll to the bottom of [Free-Champs][] and click **Execute Request**. The response body should show the list of champion id's.
 
 [Free-Champs]: https://developer.riotgames.com/apis#champion-v3/GET_getChampionInfo
 
 *Your development API key expires every day. Go to your account dashboard to generate a new one. It is free to do so.*
+
+Update the `"freeChampionIds"` key list in data.json:
+
+```
+"freeChampionIds": {
+    "key": [
+      10,
+      13,
+      28,
+      40,
+      67,
+      74,
+      86,
+      89,
+      101,
+      111,
+      120,
+      221,
+      427,
+      498,
+      518,
+      887
+    ]
+  }
+```
 
 ## Resources
 **™ & © 2022 Riot Games, Inc.  League of Legends and all related logos, characters, names and distinctive likenesses thereof are exclusive property of Riot Games, Inc.  All Rights Reserved.**

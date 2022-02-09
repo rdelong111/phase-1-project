@@ -351,8 +351,10 @@ function createC2(content, data) {
 	const spellHeadW = document.createElement('th');
 	const spellHeadE = document.createElement('th');
 	const spellHeadR = document.createElement('th');
-	const spellBodRow = document.createElement('tr');
-	const spellBodPas = document.createElement('td');
+	const spellBodTextRow = document.createElement('tr');
+	const spellBodTextPas = document.createElement('td');
+	const spellBodPicRow = document.createElement('tr');
+	const spellBodPicPas = document.createElement('td');
 	const imgP = document.createElement('img');
 
 	tableCap.textContent = `${data.name} spells`;
@@ -361,7 +363,7 @@ function createC2(content, data) {
 	spellHeadW.textContent = 'W';
 	spellHeadE.textContent = 'E';
 	spellHeadR.textContent = 'R';
-	spellBodPas.innerHTML = `${data.passive.name}<br>`;
+	spellBodTextPas.textContent = data.passive.name;
 	imgP.setAttribute('src', `http://ddragon.leagueoflegends.com/cdn/12.3.1/img/passive/${data.passive.image.full}`);
 	imgP.setAttribute('class', 'spellImg');
 
@@ -371,12 +373,14 @@ function createC2(content, data) {
 	spellHeadRow.appendChild(spellHeadE);
 	spellHeadRow.appendChild(spellHeadR);
 	tHead.appendChild(spellHeadRow);
-	spellBodPas.appendChild(imgP);
-	spellBodRow.appendChild(spellBodPas);
+	spellBodTextRow.appendChild(spellBodTextPas);
+	spellBodPicPas.appendChild(imgP);
+	spellBodPicRow.appendChild(spellBodPicPas);
 	for (spell of data.spells) {
-		createTableColC2(spell, spellBodRow);
+		createTableColsC2(spell, spellBodTextRow, spellBodPicRow);
 	}
-	tBody.appendChild(spellBodRow);
+	tBody.appendChild(spellBodTextRow);
+	tBody.appendChild(spellBodPicRow);
 	Ctable.appendChild(tableCap);
 	Ctable.appendChild(tHead);
 	Ctable.appendChild(tBody);
@@ -389,14 +393,17 @@ function createC2(content, data) {
 }
 
 // Creates a spell column for pop-up column 2 table
-function createTableColC2(spell, body) {
-	const col = document.createElement('td');
+function createTableColsC2(spell, textRow, picRow) {
+	const text = document.createElement('td');
+	const imgSpot = document.createElement('td');
 	const img = document.createElement('img');
-	col.innerHTML = `${spell.name}<br>`;
+	text.textContent = spell.name;
 	img.setAttribute('src', `http://ddragon.leagueoflegends.com/cdn/12.3.1/img/spell/${spell.image.full}`);
 	img.setAttribute('class', 'spellImg');
-	col.appendChild(img);
-	body.appendChild(col);
+
+	textRow.appendChild(text);
+	imgSpot.appendChild(img);
+	picRow.appendChild(imgSpot);
 
 	// Alerts the user of what the champion spell does
 	img.addEventListener('click', () => {
