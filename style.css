@@ -91,6 +91,7 @@ figure {
 
 .card article {
   height: 175px;
+  overflow: scroll;
 }
 
 .card article h1 {

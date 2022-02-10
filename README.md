@@ -30,7 +30,7 @@ $ json-server --watch data.json
 ### Updating Free-to-Play Champions
 Every week on Tuesday, a new set of champions are selected to be the Free-to-Play champions (even if you don't own them, you can play as them)
 
-In order to access the id's of the current free to play champions, you'll need to go to [Free-Champs][] and login to your developer account (free to make). After you login, scroll to the bottom of [Free-Champs][] and click **Execute Request**. The response body should show the list of champion id's.
+In order to access the id's of the current free to play champions, you'll need to go to [Free-Champs][] and login to your developer account (free to make). After you login, scroll to the bottom of [Free-Champs][] and click **Execute Request**. The **RESPONSE BODY** should show the list of champion id's.
 
 [Free-Champs]: https://developer.riotgames.com/apis#champion-v3/GET_getChampionInfo
 

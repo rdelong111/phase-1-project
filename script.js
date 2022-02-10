@@ -61,7 +61,7 @@ function freefetch(onPage) {
 
 // Every time the sorting boxes are changed, this function is called to get all of the champions and their data
 function getChampions(onPage, list = []) {
-  fetch('http://ddragon.leagueoflegends.com/cdn/12.2.1/data/en_US/champion.json')
+  fetch('http://ddragon.leagueoflegends.com/cdn/12.3.1/data/en_US/champion.json')
   .then(r => r.json())
   .then(object => {
   	document.getElementById('totalamt').textContent = Object.keys(object.data).length;
@@ -185,12 +185,10 @@ function addChampion(champion, isOwned) {
   	if (MorLlore.textContent === 'View More') {
   		MorLlore.textContent = 'View Less';
   		changeLore(Cblurb, champion.id, MorLlore);
-  		Cblurb.style.fontSize = '12px';
   	}
   	else {
   		MorLlore.textContent = 'View More';
   		Cblurb.textContent = champion.blurb;
-  		Cblurb.style.fontSize = '16px';
   		Cblurb.appendChild(MorLlore);
   	}
   });
